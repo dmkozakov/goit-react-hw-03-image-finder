@@ -8,7 +8,10 @@ const initialValues = {
 
 class Searchbar extends Component {
   handleSubmit = ({ query }, { resetForm }) => {
-    this.props.onSubmit(query);
+    if (!query) {
+      return alert('Enter a query');
+    }
+    this.props.onSubmit(query.trim().toLowerCase());
     resetForm();
   };
   render() {
