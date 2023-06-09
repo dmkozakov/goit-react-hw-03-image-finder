@@ -1,4 +1,7 @@
 import { Component } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import AppStyled from './App.styled';
 import Searchbar from './Searchbar/Searchbar';
 import fetchImages from 'services/pixabay-api';
 import ImageGallery from './ImageGallery/ImageGallery';
@@ -11,16 +14,15 @@ export class App extends Component {
     searchQuery: '',
     page: 1,
     isLoading: false,
-    showModal: false
   };
 
   async componentDidUpdate(_, prevState) {
     const { searchQuery } = this.state;
 
     if (prevState.searchQuery !== searchQuery) {
-      try {
-        this.setState({ isLoading: true });
+      this.setState({ isLoading: true });
 
+      try {
         this.resetPage();
 
         const response = await fetchImages(searchQuery);
@@ -29,7 +31,7 @@ export class App extends Component {
 
         this.incrementPage();
       } catch (error) {
-        console.log(error);
+        toast.error(error.message);
       } finally {
         this.setState({ isLoading: false });
       }
@@ -48,11 +50,12 @@ export class App extends Component {
 
       const response = await fetchImages(searchQuery, page);
       const images = response.hits;
+
       this.setState(prevState => ({
         images: [...prevState.images, ...images],
       }));
     } catch (error) {
-      console.log(error);
+      toast.error(error.message);
     } finally {
       this.setState({ isLoading: false });
     }
@@ -70,14 +73,28 @@ export class App extends Component {
 
   render() {
     const { images, isLoading } = this.state;
-    return (
-      <>
-        <Searchbar onSubmit={this.handleSubmit} />
-        <ImageGallery images={this.state.images} />
-        {isLoading && <Loader />}
 
-        {images.length !== 0 && <Button onClick={this.handleLoadMore} />}
-      </>
+    return (
+      <AppStyled>
+        <Searchbar onSubmit={this.handleSubmit} />
+        {images.length !== 0 && !isLoading && <ImageGallery images={images} />}
+        {isLoading && <Loader />}
+        {images.length !== 0 && !isLoading && (
+          <Button onClick={this.handleLoadMore} />
+        )}
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </AppStyled>
     );
   }
 }

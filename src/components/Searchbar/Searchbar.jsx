@@ -1,6 +1,10 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Field } from 'formik';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import SearchbarStyled from './Searchbar.styled';
+import SearchForm from './SearchForm.styled';
 
 const initialValues = {
   query: '',
@@ -9,31 +13,30 @@ const initialValues = {
 class Searchbar extends Component {
   handleSubmit = ({ query }, { resetForm }) => {
     if (!query) {
-      return alert('Enter a query');
+      return toast.info('Please, enter a query');
     }
     this.props.onSubmit(query.trim().toLowerCase());
     resetForm();
   };
   render() {
     return (
-      <header className="searchbar">
+      <SearchbarStyled>
         <Formik initialValues={initialValues} onSubmit={this.handleSubmit}>
-          <Form className="form">
-            <button type="submit" className="button">
-              <span className="button-label">Search</span>
+          <SearchForm>
+            <button type="submit">
+              <span>Search</span>
             </button>
 
             <Field
               name="query"
-              className="input"
               type="text"
               autoComplete="off"
               autoFocus
               placeholder="Search images and photos"
             />
-          </Form>
+          </SearchForm>
         </Formik>
-      </header>
+      </SearchbarStyled>
     );
   }
 }

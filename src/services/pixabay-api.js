@@ -11,7 +11,12 @@ const parameters = new URLSearchParams({
 
 async function fetchImages(query, page = 1) {
   const response = await axios.get(`?q=${query}&page=${page}&${parameters}`);
-  return response.data;
+
+  if (response.data.total) {
+    return response.data;
+  }
+
+  return Promise.reject(new Error(`We can\`t find image of ${query}`));
 }
 
 export default fetchImages;
