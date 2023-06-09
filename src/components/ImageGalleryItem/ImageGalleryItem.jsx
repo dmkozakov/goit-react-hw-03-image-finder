@@ -8,13 +8,10 @@ class ImageGalleryItem extends Component {
   };
 
   openModal = () => {
-    console.log('Открываем модалку');
-
     this.setState({ showModal: true });
   };
 
   closeModal = () => {
-    console.log('Закрываем модалку');
     this.setState({ showModal: false });
   };
 
@@ -24,7 +21,7 @@ class ImageGalleryItem extends Component {
     const { webformatURL, largeImageURL, tags } = image;
 
     return (
-      <div>
+      <>
         <img src={webformatURL} alt={tags} onClick={this.openModal} />
 
         {showModal && (
@@ -32,7 +29,7 @@ class ImageGalleryItem extends Component {
             <img src={largeImageURL} alt={tags} />
           </Modal>
         )}
-      </div>
+      </>
     );
   }
 }
@@ -41,6 +38,6 @@ export default ImageGalleryItem;
 
 ImageGalleryItem.propTypes = {
   tags: PropTypes.string,
-  // largeImageURL: PropTypes.string.isRequired,
+  largeImageURL: PropTypes.string,
   webformatURL: PropTypes.string,
 };

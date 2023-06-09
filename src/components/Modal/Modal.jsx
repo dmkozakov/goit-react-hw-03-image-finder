@@ -1,5 +1,7 @@
 import { Component } from 'react';
 import { createPortal } from 'react-dom';
+import ModalStyled from './Modal.styled';
+import Overlay from './Overlay.styled';
 
 const modalRoot = document.querySelector('#modal-root');
 
@@ -14,14 +16,12 @@ class Modal extends Component {
 
   handleKeyDown = e => {
     if (e.code === 'Escape') {
-      console.log('Нажали esc');
       this.props.onClose();
     }
   };
 
   handleBackdropClick = e => {
     if (e.currentTarget === e.target) {
-      console.log('Close modal');
       this.props.onClose();
     }
   };
@@ -30,9 +30,9 @@ class Modal extends Component {
     const { children } = this.props;
 
     return createPortal(
-      <div className="overlay" onClick={this.handleBackdropClick}>
-        <div className="modal">{children}</div>
-      </div>,
+      <Overlay onClick={this.handleBackdropClick}>
+        <ModalStyled>{children}</ModalStyled>
+      </Overlay>,
       modalRoot
     );
   }
