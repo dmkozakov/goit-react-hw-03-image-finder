@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 const Gallery = styled.ul`
+  position: relative;
   display: grid;
   max-width: calc(100vw - 48px);
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));

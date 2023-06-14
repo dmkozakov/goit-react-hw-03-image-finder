@@ -9,7 +9,7 @@ const parameters = new URLSearchParams({
   per_page: 12,
 });
 
-async function fetchImages(query, page = 1) {
+async function fetchImages(query = '', page = 1) {
   const response = await axios.get(`?q=${query}&page=${page}&${parameters}`);
 
   if (response.data.total) {
