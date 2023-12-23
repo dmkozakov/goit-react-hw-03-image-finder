@@ -6,8 +6,9 @@ import Searchbar from './Searchbar/Searchbar';
 import fetchImages from 'services/pixabay-api';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
+import { IGalleryState } from 'interfaces/IGalleryState';
 
-export class App extends Component {
+export class App extends Component<IGalleryState> {
   state = {
     images: [],
     searchQuery: '',
@@ -15,14 +16,14 @@ export class App extends Component {
     isLoading: false,
   };
 
-  async componentDidUpdate(_, prevState) {
+  async componentDidUpdate(_: IGalleryState, prevState: IGalleryState) {
     const { searchQuery, page } = this.state;
     if (prevState.searchQuery !== searchQuery || prevState.page !== page) {
       await this.requestImages(searchQuery, page);
     }
   }
 
-  requestImages = async (searchQuery, page) => {
+  requestImages = async (searchQuery: string, page: number) => {
     try {
       this.setState({ isLoading: true });
 
@@ -32,7 +33,7 @@ export class App extends Component {
       if (page === 1) {
         this.setState({ images });
       } else {
-        this.setState(prevState => ({
+        this.setState((prevState: IGalleryState) => ({
           images: [...prevState.images, ...images],
         }));
       }
@@ -43,12 +44,12 @@ export class App extends Component {
     }
   };
 
-  handleSubmit = async query => {
+  handleSubmit = async (query: string) => {
     this.setState({ searchQuery: query, page: 1 });
   };
 
   handleLoadMore = async () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
+    this.setState((prevState: IGalleryState) => ({ page: prevState.page + 1 }));
   };
 
   render() {
@@ -56,10 +57,7 @@ export class App extends Component {
 
     return (
       <AppStyled>
-        <Searchbar
-          onSubmit={this.handleSubmit}
-          onSearchBtn={this.handleSearchBtn}
-        />
+        <Searchbar onSubmit={this.handleSubmit} />
         <ImageGallery images={images} isLoading={isLoading} />
         {images.length !== 0 && !isLoading && (
           <Button onClick={this.handleLoadMore} />

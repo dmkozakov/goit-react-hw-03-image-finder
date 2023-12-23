@@ -1,8 +1,12 @@
-import PropTypes from 'prop-types';
 import Modal from 'components/Modal/Modal';
+import { IImage } from 'interfaces/IImage';
 import { Component } from 'react';
 
-class ImageGalleryItem extends Component {
+interface Props {
+  image: IImage;
+}
+
+class ImageGalleryItem extends Component<Props> {
   state = {
     showModal: false,
   };
@@ -35,9 +39,3 @@ class ImageGalleryItem extends Component {
 }
 
 export default ImageGalleryItem;
-
-ImageGalleryItem.propTypes = {
-  tags: PropTypes.string,
-  largeImageURL: PropTypes.string,
-  webformatURL: PropTypes.string,
-};

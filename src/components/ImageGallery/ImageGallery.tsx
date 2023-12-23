@@ -1,10 +1,12 @@
-import PropTypes from 'prop-types';
 import Gallery from './ImageGallery.styled';
 import GalleryItem from 'components/ImageGalleryItem/ImageGalleryItem.styled';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import Loader from 'components/Loader/Loader';
+import { IGalleryState } from 'interfaces/IGalleryState';
 
-const ImageGallery = ({ images, isLoading }) => {
+type Props = Pick<IGalleryState, 'images' | 'isLoading'>;
+
+const ImageGallery = ({ images, isLoading }: Props) => {
   const showLoader = isLoading && images.length > 0;
 
   return (
@@ -24,7 +26,3 @@ const ImageGallery = ({ images, isLoading }) => {
 };
 
 export default ImageGallery;
-
-ImageGallery.propTypes = {
-  images: PropTypes.arrayOf(PropTypes.object).isRequired,
-};

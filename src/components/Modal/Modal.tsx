@@ -1,11 +1,21 @@
-import { Component } from 'react';
+import { Component, KeyboardEvent, MouseEvent } from 'react';
 import { createPortal } from 'react-dom';
 import ModalStyled from './Modal.styled';
 import Overlay from './Overlay.styled';
 
-const modalRoot = document.querySelector('#modal-root');
+declare global {
+  interface WindowEventMap {
+    keydown: KeyboardEvent<HTMLInputElement>;
+  }
+}
 
-class Modal extends Component {
+interface Props {
+  onClose: () => void;
+}
+
+const modalRoot = document.querySelector('#modal-root') as HTMLDivElement;
+
+class Modal extends Component<Props> {
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
   }
@@ -14,13 +24,13 @@ class Modal extends Component {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  handleKeyDown = e => {
+  handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.code === 'Escape') {
       this.props.onClose();
     }
   };
 
-  handleBackdropClick = e => {
+  handleBackdropClick = (e: MouseEvent<HTMLDivElement>) => {
     if (e.currentTarget === e.target) {
       this.props.onClose();
     }
